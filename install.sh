@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "teste"
+echo "123"
