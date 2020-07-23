@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo apt update && sudo apt upgrade -y
+sudo apt update
+sudo apt -y upgrade
 
 language (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -15,12 +16,12 @@ case "$language" in
     1|01)
     clear
     sleep 0.3
-    wget https://github.com/Zonimi/NGINX-CONFIG/blob/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
+    wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/pt-br/menu.sh -O /bin/menu > /dev/null 2>&1
     chmod +x /bin/menu
-    wget https://github.com/Zonimi/NGINX-CONFIG/blob/master/modules/installweb.sh -O /bin/installweb > /dev/null 2>&1
-    chmod +x /bin/installweb
+    wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/pt-br/atualizarsistema.sh -O /bin/atualizarsistema > /dev/null 2>&1
+    chmod +x /bin/atualizarsistema
     wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/pt-br/instalarphp.sh -O /bin/instalarphp > /dev/null 2>&1
-    chmod +x /bin/createdomain
+    chmod +x /bin/instalarphp
     clear
     menu
     ;;
