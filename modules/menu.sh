@@ -57,7 +57,7 @@ certbot delete --cert-name ${removedomain} > /dev/null 2>&1
 sudo systemctl reload nginx > /dev/null 2>&1
 
 case "$removedomain" in
-    Leave|leave|LEAVE|\n)
+    Leave|leave|LEAVE|\\n)
     echo "\n\033[1;31mReturning...\033[0m"
     sleep 2
     menu
