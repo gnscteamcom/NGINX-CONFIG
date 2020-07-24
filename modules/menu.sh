@@ -87,6 +87,10 @@ case "$language" in
     removehost
     menu
     ;;
+    Leave|leave|LEAVE)
+    clear
+    sleep 0.3
+    ;;
     *)
     echo "\n\033[1;31mInvalid option!\033[0m"
     sleep 3
