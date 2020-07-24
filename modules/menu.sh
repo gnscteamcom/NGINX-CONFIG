@@ -39,12 +39,19 @@ removehost () {
 
 # Question which domain
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m"
+echo "\e[1;3;31m[\e[1;3;32m-\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m"
 printf "\n"
 ls -1 /etc/nginx/sites-enabled/
 printf "\n"
-read -p "$(tput setaf 6)> $(tput setaf 7)Your language: $(tput setaf 6)" removedomain
+echo "$(tput setaf 6)! $(tput setaf 8)Send "leave" to return"
+read -p "$(tput setaf 6)> $(tput setaf 7)Specify the domain: $(tput setaf 6)" removedomain
 echo -n "$(tput setaf 7)"
+
+# Remove files nginx
+rm /etc/nginx/sites-available/${removedomain}.conf
+
+# Remove cert SSL
+certbot delete --cert-name ${removedomain}
 
 }
 
