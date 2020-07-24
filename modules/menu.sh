@@ -54,7 +54,7 @@ rm /etc/nginx/sites-available/${removedomain}.conf > /dev/null 2>&1
 certbot delete --cert-name ${removedomain} > /dev/null 2>&1
 
 # Reload NGINX
-sudo nginx -t && sudo systemctl reload nginx > /dev/null 2>&1
+sudo nginx -t > /dev/null 2>&1 && sudo systemctl reload nginx > /dev/null 2>&1
 
 case "$removedomain" in
     Leave|leave|LEAVE)
