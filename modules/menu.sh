@@ -29,10 +29,23 @@ echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' | sudo tee /etc/letsen
 sudo chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
 
 # Add symbolic link
-ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}.conf
+ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
 
 # Reload NGINX to load in your new configuration:
 sudo nginx -t && sudo systemctl reload nginx
+}
+
+removehost () {
+
+# Question which domain
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m"
+printf "\n"
+ls -1 /etc/nginx/sites-enabled/
+printf "\n"
+read -p "$(tput setaf 6)> $(tput setaf 7)Your language: $(tput setaf 6)" removedomain
+echo -n "$(tput setaf 7)"
+
 }
 
 language (){
@@ -54,13 +67,7 @@ case "$language" in
     2|02)
     clear
     sleep 0.3
-    wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/en-us/menu.sh -O /bin/menu > /dev/null 2>&1
-    chmod +x /bin/menu
-    wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/en-us/atualizarsistema.sh -O /bin/atualizarsistema > /dev/null 2>&1
-    chmod +x /bin/atualizarsistema
-    wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/en-us/instalarphp.sh -O /bin/instalarphp > /dev/null 2>&1
-    chmod +x /bin/instalarph
-    clear
+    removehost
     menu
     ;;
     *)
