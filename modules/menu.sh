@@ -56,9 +56,10 @@ certbot delete --cert-name ${removedomain}
 # Reload NGINX
 sudo nginx -t && sudo systemctl reload nginx
 
-case "$language" in
+case "$removedomain" in
     Leave|leave|LEAVE)
     clear
+    acho "work"
     sleep 0.3
     menu
     ;;
