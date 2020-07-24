@@ -48,18 +48,18 @@ read -p "$(tput setaf 6)> $(tput setaf 7)Specify the domain: $(tput setaf 6)" re
 echo -n "$(tput setaf 7)"
 
 # Remove files nginx
-rm /etc/nginx/sites-available/${removedomain}.conf
+rm /etc/nginx/sites-available/${removedomain}.conf > /dev/null 2>&1
 
 # Remove cert SSL
-certbot delete --cert-name ${removedomain}
+certbot delete --cert-name ${removedomain} > /dev/null 2>&1
 
 # Reload NGINX
-sudo nginx -t && sudo systemctl reload nginx
+sudo nginx -t && sudo systemctl reload nginx > /dev/null 2>&1
 
 case "$removedomain" in
     Leave|leave|LEAVE)
-    echo "work"
-    sleep 0.3
+    echo "\n\033[1;31mReturning...\033[0m"
+    sleep 2
     menu
     ;;
 esac
