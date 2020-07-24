@@ -43,7 +43,7 @@ echo "\e[1;3;31m[\e[1;3;32m-\e[1;3;31m] \e[1;3;33mWhich host do you want to remo
 printf "\n"
 ls -1 /etc/nginx/sites-enabled/
 printf "\n"
-echo "$(tput setaf 6)! $(tput setaf 8)Send "leave" to return"
+echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
 read -p "$(tput setaf 6)> $(tput setaf 7)Specify the domain: $(tput setaf 6)" removedomain
 echo -n "$(tput setaf 7)"
 
@@ -53,9 +53,19 @@ rm /etc/nginx/sites-available/${removedomain}.conf
 # Remove cert SSL
 certbot delete --cert-name ${removedomain}
 
+# Reload NGINX
+sudo nginx -t && sudo systemctl reload nginx
+
+case "$language" in
+    Leave|leave|LEAVE)
+    clear
+    sleep 0.3
+    menu
+    ;;
+esac
 }
 
-language (){
+menu (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mSelect your language\e[0m"
 printf "\n"
@@ -82,7 +92,7 @@ case "$language" in
     sleep 3
     clear
     sleep 0.3
-    language
+    menu
 esac
 }
-language
+menu
