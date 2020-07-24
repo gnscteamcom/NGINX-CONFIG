@@ -58,8 +58,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 case "$removedomain" in
     Leave|leave|LEAVE)
-    clear
-    acho "work"
+    echo "work"
     sleep 0.3
     menu
     ;;
