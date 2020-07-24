@@ -94,7 +94,7 @@ case "$optionmenu" in
     printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     ;;
     *)
-    echo "\n\033[1;31mInvalid option!\033[0m"
+    printf " \033[1;31mInvalid option!\033[0m"
     sleep 1.5
     clear
     sleep 0.3
