@@ -1,7 +1,7 @@
 #!/bin/bash
 
 addhost () {
-printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 # Question which domain
 read -p "$(tput setaf 6)> $(tput setaf 7)Enter domain: $(tput setaf 6)" domain
@@ -38,7 +38,7 @@ sudo nginx -t && sudo systemctl reload nginx
 removehost () {
 
 # Question which domain
-printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m-\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m"
 printf "\n"
 ls -1 /etc/nginx/sites-enabled/
@@ -90,6 +90,7 @@ case "$language" in
     Leave|leave|LEAVE)
     clear
     sleep 0.3
+    printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     ;;
     *)
     echo "\n\033[1;31mInvalid option!\033[0m"
