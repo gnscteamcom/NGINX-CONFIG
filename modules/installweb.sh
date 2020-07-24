@@ -10,7 +10,7 @@ sudo apt -y install curl gnupg2 ca-certificates lsb-release unzip sed
 echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
     | sudo tee /etc/apt/sources.list.d/nginx.list
 curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
-sudo apt update
+sudo apt update && sudo apt -y upgrade
 sudo apt install nginx
 
 # Install PHP-FPM stable for system
@@ -22,6 +22,9 @@ php -r "echo PHP_MAJOR_VERSION,'.',PHP_MINOR_VERSION;" > phpversion
 PHPV=$(cat phpversion)
 sudo rm phpversion
 
+# Edit version in config fastcgi
+sudo sed -i "s/VERSIONPHP/${PHPV}/" modules/setup/nginx/nginxconfig/php_fastcgi.conf
+
 # Hide php version
 sudo sed -i "s/expose_php = Off/expose_php = On/g" /etc/php/${PHPV}/fpm/php.ini
 
@@ -31,11 +34,12 @@ tar -czvf backup_nginx_$(date +'%F').tar.gz nginx.conf sites-available/ sites-en
 
 # Delete old archives
 rm -r /etc/nginx/sites-available
-em -r /etc/nginx/sites-enabled
+rm -r /etc/nginx/sites-enabled
 rm /etc/nginx/nginx.conf
+rm /etc/nginx/mime.types
 
 # Move new conf
-mv /tmp/NGINX-CONFIG/nginx/* /etc/nginx/
+mv modules/setup/nginx/* /etc/nginx/
 
 # Generate Diffie-Hellman keys
 openssl dhparam -out /etc/nginx/dhparam.pem 2048
