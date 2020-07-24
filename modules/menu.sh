@@ -72,9 +72,10 @@ printf "\n"
 echo "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (Domain)             
     \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n"
-read -p "$(tput setaf 6)> $(tput setaf 7)Your language: $(tput setaf 6)" language
+echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
+read -p "$(tput setaf 6)> $(tput setaf 7)Select an option (number): $(tput setaf 6)" optionmenu
 echo -n "$(tput setaf 7)"
-case "$language" in
+case "$optionmenu" in
     1|01)
     clear
     sleep 0.3
@@ -89,12 +90,12 @@ case "$language" in
     ;;
     Leave|leave|LEAVE)
     clear
-    sleep 0.3
+    sleep 0.1
     printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     ;;
     *)
     echo "\n\033[1;31mInvalid option!\033[0m"
-    sleep 3
+    sleep 1.5
     clear
     sleep 0.3
     menu
