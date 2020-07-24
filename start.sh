@@ -33,7 +33,7 @@ case "$language" in
     wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/en-us/atualizarsistema.sh -O /bin/atualizarsistema > /dev/null 2>&1
     chmod +x /bin/atualizarsistema
     wget https://raw.githubusercontent.com/Zonimi/WebServer/master/Modulos/en-us/instalarphp.sh -O /bin/instalarphp > /dev/null 2>&1
-    chmod +x /bin/instalarphp
+    chmod +x /bin/instalarph
     clear
     menu
     ;;
