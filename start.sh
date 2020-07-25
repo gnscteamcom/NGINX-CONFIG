@@ -22,8 +22,13 @@ php -r "echo PHP_MAJOR_VERSION,'.',PHP_MINOR_VERSION;" > phpversion
 PHPV=$(cat phpversion)
 sudo rm phpversion
 
+# Obtain path dir
+echo "${PWD}" > pathdir
+PATHDIR=$(cat pathdir)
+sudo rm pathdir
+
 # Edit version in config fastcgi
-sudo sed -i "s/VERSIONPHP/${PHPV}/g" modules/setup/nginx/nginxconfig/php_fastcgi.conf
+sudo sed -i "s/VERSIONPHP/${PHPV}/g" ${PATHDIR}/modules/setup/nginx/nginxconfig/php_fastcgi.conf
 
 # Hide php version
 sudo sed -i "s/expose_php = Off/expose_php = On/g" /etc/php/${PHPV}/fpm/php.ini
@@ -39,7 +44,7 @@ rm /etc/nginx/nginx.conf
 rm /etc/nginx/mime.types
 
 # Move new conf
-mv modules/setup/nginx/* /etc/nginx/
+mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
 
 # Generate Diffie-Hellman keys
 openssl dhparam -out /etc/nginx/dhparam.pem 2048
@@ -66,7 +71,7 @@ case "$language" in
     sleep 0.3
     wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     chmod +x /bin/menu
-    rm -r *
+    rm -r ${PATHDIR}
     clear
     menu
     ;;
@@ -75,7 +80,7 @@ case "$language" in
     sleep 0.3
     wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     chmod +x /bin/menu
-    rm -r *
+    rm -r ${PATHDIR}
     clear
     menu
     ;;
