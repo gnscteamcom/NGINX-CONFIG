@@ -6,10 +6,13 @@ printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 # Question which domain
 read -p "$(tput setaf 6)> $(tput setaf 7)Enter domain: $(tput setaf 6)" domain
 echo -n "$(tput setaf 7)"
+echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
+read -p "$(tput setaf 6)> $(tput setaf 7)Are you using CloudFlare: $(tput setaf 6)" ssl_install
+echo -n "$(tput setaf 7)"
 
 # Create website
-cp /etc/nginx/sites-available/default.conf /etc/nginx/sites-available/${domain}.conf
-sudo sed -i "s/DOMAIN/${domain}/g"
+cp /etc/nginx/sites-available/exemple.com.conf /etc/nginx/sites-available/${domain}.conf
+sudo sed -i "s/exemple.com/${domain}/g" /etc/nginx/sites-available/${domain}.conf
 mkdir -p /var/www/${domain}/public
 chown www-data /var/www/${domain}/public
 
@@ -19,21 +22,28 @@ sed -i 's/80/81/g; s/443/80/g' /etc/nginx/sites-available/${domain}.conf
 sudo nginx -t && sudo systemctl reload nginx
 
 # Obtain SSL certificates from Let's Encrypt using Certbot:
-# certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
+if [ "${ssl_install}" = "y" -o "${ssl_install}" = "Y" -o "${ssl_install}" = "yes" -o "${ssl_install}" = "YES" ]; then
+sudo certbot certonly --dns-cloudflare --email info@${Domain} --force-renewal -n --agree-tos --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain},*.${domain} --preferred-challenges dns-01
+else
+certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
+fi
 
 Uncomment SSL related directives in the configuration:
-# sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain}.conf
-# sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain}.conf
+sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain}.conf
+sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain}.conf
 
 # Configure Certbot to reload NGINX when it successfully renews certificates:
-# echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
-# sudo chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+sudo chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
 
 # Add symbolic link
 ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
 
 # Reload NGINX to load in your new configuration:
 sudo nginx -t && sudo systemctl reload nginx
+
+echo "$(tput setaf 6)! $(tput setaf 7)Select an option (number): $(tput setaf 6)"
+
 }
 
 removehost () {
@@ -50,6 +60,7 @@ echo -n "$(tput setaf 7)"
 
 # Remove files nginx
 rm /etc/nginx/sites-available/${removedomain}.conf > /dev/null 2>&1
+unlink /etc/nginx/sites-enabled/${removedomain}
 
 # Remove cert SSL
 certbot delete --cert-name ${removedomain} > /dev/null 2>&1
@@ -58,7 +69,7 @@ certbot delete --cert-name ${removedomain} > /dev/null 2>&1
 sudo systemctl reload nginx > /dev/null 2>&1
 
 case "$removedomain" in
-    Leave|leave|LEAVE|\\n)
+    Leave|leave|LEAVE|\n)
     echo "\n\033[1;31mReturning...\033[0m"
     sleep 2
     menu
