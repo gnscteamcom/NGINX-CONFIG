@@ -102,37 +102,30 @@ ${sudo_cmd}mkdir /root/.secrets
 sudo chmod 0700 /root/.secrets/
 touch /root/.secrets/cloudflare.ini
 
-echo "\"dns_cloudflare_email = \"youremail@example.com\"" > /root/.secrets/cloudflare.ini
-echo "\"dns_cloudflare_api_key = \"123456789\"" >> /root/.secrets/cloudflare.ini
+echo "dns_cloudflare_email = \"youremail@example.com\"" > /root/.secrets/cloudflare.ini
+echo "dns_cloudflare_api_key = \"123456789\"" >> /root/.secrets/cloudflare.ini
 
 sudo chmod 0400 /root/.secrets/cloudflare.ini
 
 else
-
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
 printf "\n"
 
-echo "$(tput setaf 6)1. $(tput setaf 7)Go to https://cloudflare.com and connect with your account or create a new one."
+echo "$(tput setaf 6)1. $(tput setaf 7)Go to cloudflare.com and connect with your account or create"
 echo "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare."
 echo "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to SSL/TLS and leave it below;"
-echo "   \nSSL/TLS encryption
-          Full (strict)"
-echo "   \nAlways Use HTTPS 
-          Off"
-echo "   \nHTTP Strict Transport Security 
-          Disable"
-echo "   \nMinimum TLS Version 
-          TLS 1.2"
-echo "   \nOpportunistic Encryption 
-          Off"
-echo "   \nTLS 1.3 
-          On"
-echo "   \nAutomatic HTTPS Rewrites 
-          Off\n"
+echo "    \n$(tput setaf 3)SSL/TLS encryption:$(tput setaf 7) Full (strict)"
+echo "    $(tput setaf 3)Always Use HTTPS:$(tput setaf 7) Off"
+echo "    $(tput setaf 3)HTTP Strict Transport Security:$(tput setaf 7) Disable"
+echo "    $(tput setaf 3)Minimum TLS Version:$(tput setaf 7) TLS 1.2"
+echo "    $(tput setaf 3)Opportunistic Encryption:$(tput setaf 7) Off"
+echo "    $(tput setaf 3)TLS 1.3:$(tput setaf 7) On"
+echo "    $(tput setaf 3)Automatic HTTPS Rewrites:$(tput setaf 7) Off\n"
 echo "$(tput setaf 6)4. $(tput setaf 7)Go to \"Overview\" and scroll down to the bottom of the page."
 echo "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token\" and go to \"API Tokens\"."
 echo "$(tput setaf 6)6. $(tput setaf 7)Click on \"View\" in your \"Global API Key\"."
-echo "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n\n"
+echo "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n"
 
 read -p "$(tput setaf 6)> $(tput setaf 7)Insert your Cloud Flare Global API Key: $(tput setaf 6)" apicf
 echo -n "$(tput setaf 7)"
@@ -143,8 +136,8 @@ ${sudo_cmd}mkdir /root/.secrets
 sudo chmod 0700 /root/.secrets/
 touch /root/.secrets/cloudflare.ini
 
-echo "\"dns_cloudflare_email = \"${emailcf}\"" > /root/.secrets/cloudflare.ini
-echo "\"dns_cloudflare_api_key = \"${apicf}\"" >> /root/.secrets/cloudflare.ini
+echo "dns_cloudflare_email = \"${emailcf}\"" > /root/.secrets/cloudflare.ini
+echo "dns_cloudflare_api_key = \"${apicf}\"" >> /root/.secrets/cloudflare.ini
 
 sudo chmod 0400 /root/.secrets/cloudflare.ini
 
