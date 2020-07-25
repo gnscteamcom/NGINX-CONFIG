@@ -19,15 +19,15 @@ sed -i 's/80/81/g; s/443/80/g' /etc/nginx/sites-available/${domain}.conf
 sudo nginx -t && sudo systemctl reload nginx
 
 # Obtain SSL certificates from Let's Encrypt using Certbot:
-certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
+# certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
 
 Uncomment SSL related directives in the configuration:
-sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain}.conf
-sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain}.conf
+# sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain}.conf
+# sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain}.conf
 
 # Configure Certbot to reload NGINX when it successfully renews certificates:
-echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
-sudo chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+# echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+# sudo chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
 
 # Add symbolic link
 ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
