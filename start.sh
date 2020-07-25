@@ -1,60 +1,91 @@
 #!/bin/bash
 
+# Check sudo
+if command -V sudo > /dev/null 2>&1; then
+    sudo_found="yes"
+    sudo_cmd="sudo "
+fi
+
+# Check root
+printf "$(tput setaf 6)> $(tput setaf 7)Checking administrator user: "
+if [ "`id -u`" = "0" ]; then
+    sleep 2
+    printf "$(tput setaf 6)ok$(tput setaf 7).\n"
+    sleep 1
+    sudo_cmd=""
+else
+    if [ "$sudo_found" = "yes" ]; then
+        sleep 1
+        printf "$(tput setaf 3)you need sudo rights. use: sudo sh start.sh.\033[0m\n"
+        sleep 5
+        exit 1
+    else
+        sleep 1
+        printf "$(tput setaf 9)without root, sudo not found, leaving.\033[0m\n"
+        sleep 3
+        exit 1
+    fi
+fi
+
 # Update system
-sudo apt update && sudo apt -y upgrade
+${sudo_cmd}apt update && sudo apt -y upgrade
 
 # Install prerequisits
-sudo apt -y install curl gnupg2 ca-certificates lsb-release unzip sed
+${sudo_cmd}apt -y install curl gnupg2 ca-certificates lsb-release unzip sed wget
 
 # Install nginx stable version
-echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
+${sudo_cmd}echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
     | sudo tee /etc/apt/sources.list.d/nginx.list
-curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
-sudo apt update && sudo apt -y upgrade
-sudo apt install nginx
+${sudo_cmd}curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+${sudo_cmd}apt update && sudo apt -y upgrade
+${sudo_cmd}apt install nginx
 
 # Install PHP-FPM stable for system
-sudo apt install -y php-fpm
-sudo apt install -y php-{bcmath,bz2,imap,intl,mbstring,mysqli,curl,zip,json,cli,gd,exif,xml}
+${sudo_cmd}apt install -y php-fpm
+${sudo_cmd}apt install -y php-{bcmath,bz2,imap,intl,mbstring,mysqli,curl,zip,json,cli,gd,exif,xml}
 
 # Obtain php version
 php -r "echo PHP_MAJOR_VERSION,'.',PHP_MINOR_VERSION;" > phpversion
 PHPV=$(cat phpversion)
-sudo rm phpversion
+${sudo_cmd}rm phpversion
 
 # Obtain path dir
-echo "${PWD}" > pathdir
+${sudo_cmd}echo "${PWD}" > pathdir
 PATHDIR=$(cat pathdir)
-sudo rm pathdir
+${sudo_cmd}rm pathdir
 
 # Edit version in config fastcgi
-sudo sed -i "s/VERSIONPHP/${PHPV}/g" ${PATHDIR}/modules/setup/nginx/nginxconfig/php_fastcgi.conf
+${sudo_cmd}sed -i "s/VERSIONPHP/${PHPV}/g" ${PATHDIR}/modules/setup/nginx/nginxconfig/php_fastcgi.conf
 
 # Hide php version
-sudo sed -i "s/expose_php = Off/expose_php = On/g" /etc/php/${PHPV}/fpm/php.ini
+${sudo_cmd}sed -i "s/expose_php = Off/expose_php = On/g" /etc/php/${PHPV}/fpm/php.ini
 
 # Backup nginx
 cd /etc/nginx
 tar -czvf backup_nginx_$(date +'%F').tar.gz nginx.conf sites-available/ sites-enabled/
 
 # Delete old archives
-rm -r /etc/nginx/sites-available
-rm -r /etc/nginx/sites-enabled
-rm /etc/nginx/nginx.conf
-rm /etc/nginx/mime.types
+${sudo_cmd}rm -r /etc/nginx/sites-available
+${sudo_cmd}rm -r /etc/nginx/sites-enabled
+${sudo_cmd}rm /etc/nginx/nginx.conf
+${sudo_cmd}rm /etc/nginx/mime.types
 
 # Move new conf
-mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
+${sudo_cmd}mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
 
 # Generate Diffie-Hellman keys
-openssl dhparam -out /etc/nginx/dhparam.pem 2048
+${sudo_cmd}openssl dhparam -out /etc/nginx/dhparam.pem 2048
 
 # Install certbot
-# sudo apt -y install certbot
+${sudo_cmd}apt-get install software-properties-common
+${sudo_cmd}add-apt-repository universe
+${sudo_cmd}add-apt-repository ppa:certbot/certbot
+${sudo_cmd}apt-get update && sudo apt -y upgrade
+${sudo_cmd}apt-get install certbot python-certbot-nginx python3-certbot-dns-cloudflare
 
 # Create a common ACME-challenge directory (for Let's Encrypt)
-mkdir -p /var/www/_letsencrypt
-chown www-data /var/www/_letsencrypt
+${sudo_cmd}mkdir -p /var/www/_letsencrypt
+${sudo_cmd}chown www-data /var/www/_letsencrypt
 
 language (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -69,18 +100,18 @@ case "$language" in
     1|01)
     clear
     sleep 0.3
-    wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
-    chmod +x /bin/menu
-    rm -r ${PATHDIR}
+    ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
+    ${sudo_cmd}chmod +x /bin/menu
+    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     menu
     ;;
     2|02)
     clear
     sleep 0.3
-    wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
-    chmod +x /bin/menu
-    rm -r ${PATHDIR}
+    ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
+    ${sudo_cmd}chmod +x /bin/menu
+    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     menu
     ;;
