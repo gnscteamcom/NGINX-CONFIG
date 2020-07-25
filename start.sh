@@ -87,6 +87,70 @@ ${sudo_cmd}apt-get install certbot python-certbot-nginx python3-certbot-dns-clou
 ${sudo_cmd}mkdir -p /var/www/_letsencrypt
 ${sudo_cmd}chown www-data /var/www/_letsencrypt
 
+# Settings for CloudFlare
+cloudflareconfig () {
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+
+echo "$(tput setaf 6)+ $(tput setaf 7)Some scripts depend on CloudFlare, it is important that you enable this.\n"
+echo -n "$(tput setaf 7)"
+echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
+read -p "$(tput setaf 6)> $(tput setaf 7)Do you want to configure CloudFlare: $(tput setaf 6)" cloudflare
+echo -n "$(tput setaf 7)"
+
+if [ "${cloudflare}" = "" -o "${cloudflare}" = "no" ]; then
+
+${sudo_cmd}mkdir /root/.secrets
+sudo chmod 0700 /root/.secrets/
+touch /root/.secrets/cloudflare.ini
+
+echo "\"dns_cloudflare_email = \"youremail@example.com\"" > /root/.secrets/cloudflare.ini
+echo "\"dns_cloudflare_api_key = \"123456789\"" >> /root/.secrets/cloudflare.ini
+
+sudo chmod 0400 /root/.secrets/cloudflare.ini
+
+else
+
+echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
+printf "\n"
+
+echo "$(tput setaf 6)1. $(tput setaf 7)Go to https://cloudflare.com and connect with your account or create a new one."
+echo "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare."
+echo "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to SSL/TLS and leave it below;"
+echo "   \nSSL/TLS encryption
+          Full (strict)"
+echo "   \nAlways Use HTTPS 
+          Off"
+echo "   \nHTTP Strict Transport Security 
+          Disable"
+echo "   \nMinimum TLS Version 
+          TLS 1.2"
+echo "   \nOpportunistic Encryption 
+          Off"
+echo "   \nTLS 1.3 
+          On"
+echo "   \nAutomatic HTTPS Rewrites 
+          Off\n"
+echo "$(tput setaf 6)4. $(tput setaf 7)Go to \"Overview\" and scroll down to the bottom of the page."
+echo "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token\" and go to \"API Tokens\"."
+echo "$(tput setaf 6)6. $(tput setaf 7)Click on \"View\" in your \"Global API Key\"."
+echo "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n\n"
+
+read -p "$(tput setaf 6)> $(tput setaf 7)Insert your Cloud Flare Global API Key: $(tput setaf 6)" apicf
+echo -n "$(tput setaf 7)"
+read -p "$(tput setaf 6)> $(tput setaf 7)Enter your Cloud Flare email: $(tput setaf 6)" emailcf
+echo -n "$(tput setaf 7)"
+
+${sudo_cmd}mkdir /root/.secrets
+sudo chmod 0700 /root/.secrets/
+touch /root/.secrets/cloudflare.ini
+
+echo "\"dns_cloudflare_email = \"${emailcf}\"" > /root/.secrets/cloudflare.ini
+echo "\"dns_cloudflare_api_key = \"${apicf}\"" >> /root/.secrets/cloudflare.ini
+
+sudo chmod 0400 /root/.secrets/cloudflare.ini
+
+fi
+}
 language (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mSelect your language\e[0m"
@@ -104,6 +168,7 @@ case "$language" in
     ${sudo_cmd}chmod +x /bin/menu
     ${sudo_cmd}rm -r ${PATHDIR}
     clear
+    cloudflareconfig
     menu
     ;;
     2|02)
@@ -113,6 +178,7 @@ case "$language" in
     ${sudo_cmd}chmod +x /bin/menu
     ${sudo_cmd}rm -r ${PATHDIR}
     clear
+    cloudflareconfig
     menu
     ;;
     *)
