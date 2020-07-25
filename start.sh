@@ -14,8 +14,8 @@ sudo apt update && sudo apt -y upgrade
 sudo apt install nginx
 
 # Install PHP-FPM stable for system
-sudo apt -y php-fpm
-sudo apt -y php-{bcmath,bz2,imap,intl,mbstring,mysqli,curl,zip,json,cli,gd,exif,xml}
+sudo apt install -y php-fpm
+sudo apt install -y php-{bcmath,bz2,imap,intl,mbstring,mysqli,curl,zip,json,cli,gd,exif,xml}
 
 # Obtain php version
 php -r "echo PHP_MAJOR_VERSION,'.',PHP_MINOR_VERSION;" > phpversion
@@ -50,7 +50,7 @@ mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
 openssl dhparam -out /etc/nginx/dhparam.pem 2048
 
 # Install certbot
-sudo apt install certbot
+sudo apt -y install certbot
 
 # Create a common ACME-challenge directory (for Let's Encrypt)
 mkdir -p /var/www/_letsencrypt
