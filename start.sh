@@ -50,7 +50,7 @@ mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
 openssl dhparam -out /etc/nginx/dhparam.pem 2048
 
 # Install certbot
-sudo apt -y install certbot
+# sudo apt -y install certbot
 
 # Create a common ACME-challenge directory (for Let's Encrypt)
 mkdir -p /var/www/_letsencrypt
