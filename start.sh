@@ -90,8 +90,7 @@ ${sudo_cmd}chown www-data /var/www/_letsencrypt
 # Settings for CloudFlare
 cloudflareconfig () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-
-echo "$(tput setaf 6)+ $(tput setaf 7)Some scripts depend on CloudFlare, it is important that you enable this.\n"
+echo "$(tput setaf 6)+ $(tput setaf 7)Some scripts depend on CloudFlare,\n  it is important that you enable this."
 echo -n "$(tput setaf 7)"
 echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
 read -p "$(tput setaf 6)> $(tput setaf 7)Do you want to configure CloudFlare: $(tput setaf 6)" cloudflare
