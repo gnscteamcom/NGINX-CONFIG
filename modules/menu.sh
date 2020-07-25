@@ -9,6 +9,7 @@ echo -n "$(tput setaf 7)"
 
 # Create website
 cp /etc/nginx/sites-available/default.conf /etc/nginx/sites-available/${domain}.conf
+sudo sed -i "s/DOMAIN/${domain}/g"
 mkdir -p /var/www/${domain}/public
 chown www-data /var/www/${domain}/public
 
