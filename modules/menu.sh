@@ -79,9 +79,11 @@ esac
 
 googledriveadvanced () {
 
-echo "work"
-sleep 5
-menu
+# Install
+sudo apt install unzip nodejs
+
+# copy files
+cp ${PATHDIR}/modules/setup/GDAP/* /root/
 }
 menu_script () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
