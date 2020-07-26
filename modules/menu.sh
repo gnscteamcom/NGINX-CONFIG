@@ -230,6 +230,8 @@ sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain_gdap}.conf
 # Add symbolic link
 ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
 
+pm2 restart all
+
 # Reload NGINX to load in your new configuration:
 sudo nginx -t && sudo systemctl reload nginx
 }
@@ -238,7 +240,7 @@ menu_script () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mINSTALL SCRIPT's\e[0m"
 printf "\n\n"
-echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mGoogle Drive Advanced Player (with cPanel)"             
+echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mGoogle Drive Advanced Player (with cPanel 1.0)"             
 #    \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n\n"
 echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
