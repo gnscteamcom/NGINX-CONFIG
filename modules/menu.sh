@@ -4,7 +4,7 @@ addhost () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 # Question which domain
-read -p "$(tput setaf 6)> $(tput setaf 7)Enter domain: $(tput setaf 6)" domain
+read -p "$(tput setaf 6)> $(tput setaf 7)Enter the domain: $(tput setaf 6)" domain
 echo -n "$(tput setaf 7)"
 echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
 read -p "$(tput setaf 6)> $(tput setaf 7)Are you using CloudFlare: $(tput setaf 6)" ssl_install
@@ -80,11 +80,109 @@ esac
 googledriveadvanced () {
 
 # Install
-sudo apt install unzip nodejs
+sudo apt -y install unzip nodejs npm
+npm install pm2 -g
+
+read -p "$(tput setaf 6)> $(tput setaf 7)Enter the domain: $(tput setaf 6)" domain_gdap
+echo -n "$(tput setaf 7)"
+read -p "$(tput setaf 6)> $(tput setaf 7)Enter the subdomain: $(tput setaf 6)" subdomain_gdap
+echo -n "$(tput setaf 7)"
+read -p "$(tput setaf 6)> $(tput setaf 7)Enter the prefix: $(tput setaf 6)" prefix_gdap
+echo -n "$(tput setaf 7)"
+read -p "$(tput setaf 6)> $(tput setaf 7)Number of servers: $(tput setaf 6)" n
+echo -n "$(tput setaf 7)"
+
+# Obtain path dir
+${sudo_cmd}echo "${PWD}" > pathdir
+PATHDIR=$(cat pathdir)
+${sudo_cmd}rm pathdir
+echo "${PATHDIR}"
 
 # copy files
 cp ${PATHDIR}/modules/setup/GDAP/* /root/
+
+# Unzip files and delete
+cd /root/
+unzip LoadBalancer.zip
+unzip ProxyStream.zip
+rm LoadBalancer.zip
+rm ProxyStream.zip
+
+# Start node
+cd /root/LoadBalancer/bin
+pm2 start www -i 0 --name LoadBalancer
+cd /root/ProxyStream/bin
+pm2 start www -i 0 --name ProxyStream
+
+# Edit files
+keyencrypt="$(tr -dc 'A-Za-z0-9!%&()*+-./@[\]_{}' </dev/urandom | head -c 20 ; echo)"
+sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/LoadBalancer/models/CacheManager.js
+sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/ProxyStream/models/CacheManager.js
+sudo sed -i "s/'yourdomain.com'/'${domain_gdap}'/g" /root/LoadBalancer/configs/servers.js
+sudo sed -i "s/'sv'/'${prefix_gdap}'/g" /root/LoadBalancer/configs/servers.js
+sudo sed -i 's/"yourdomain.com","www.jwplayer.com"//g' /root/ProxyStream/configs/servers.js
+
+# Create host
+touch /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+{
+echo "upstream LoadBalancer {"
+echo "    server 127.0.0.1:6666;"
+echo "}"
+echo "upstream ProxyStream {"
+echo "    server 127.0.0.1:6868;"
+echo "}"
+echo ""
+echo "server {"
+echo "    listen 80;"
+echo "    listen [::]:80"
+echo "    server_name proxy.${domain_gdap};"
+echo ""
+echo "    # security"
+echo "    include                 nginxconfig/security.conf;"
+echo ""
+echo "    #SSL
+echo "    ssl_certificate         /etc/letsencrypt/live/${domain_gdap}/fullchain.pem;"
+echo "    ssl_certificate_key     /etc/letsencrypt/live/${domain_gdap}/privkey.pem;"
+echo "    ssl_trusted_certificate /etc/letsencrypt/live/${domain_gdap}/chain.pem;"
+echo ""
+echo "    location / {"
+echo "        proxy_pass          http://LoadBalancer;"
+echo "        include             nginxconfig/proxy.conf;"
+echo "    }"
+echo "}"
+echo ""
+} > /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+
+for ((i=1;i<$n+1;i++));                                              
+do
+    {
+    echo "server {"
+    echo "    listen 80;"
+    echo "    listen [::]:80"
+    echo "    server_name ${prefix_gdpa}$i.${subdomain_gdap}.${domain_gdap};"
+    echo ""
+    echo "    # security"
+    echo "    include                 nginxconfig/security.conf;"
+    echo ""
+    echo "    #SSL
+    echo "    ssl_certificate         /etc/letsencrypt/live/${domain_gdap}/fullchain.pem;"
+    echo "    ssl_certificate_key     /etc/letsencrypt/live/${domain_gdap}/privkey.pem;"
+    echo "    ssl_trusted_certificate /etc/letsencrypt/live/${domain_gdap}/chain.pem;"
+    echo ""
+    echo "    location / {"
+    echo "        proxy_pass          http://ProxyStream;"
+    echo "        include             nginxconfig/proxy.conf;"
+    echo "    }"
+    echo "}"
+    echo ""
+    } >> /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+done
+
+# Install cert
+sudo certbot certonly --dns-cloudflare --email info@${domain_gdap} --force-renewal -n --agree-tos --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_gdap},*.${domain_gdap} --preferred-challenges dns-01
+
 }
+
 menu_script () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mINSTALL SCRIPT's\e[0m"
