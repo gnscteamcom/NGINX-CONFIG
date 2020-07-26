@@ -1,13 +1,15 @@
 #!/bin/bash
-
+echo "$(tput civis)"
 # Check sudo
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 if command -V sudo > /dev/null 2>&1; then
     sudo_found="yes"
     sudo_cmd="sudo "
 fi
 
 # Check root
-printf "$(tput setaf 6)> $(tput setaf 7)Checking administrator user: "
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+printf "$(tput setaf 6)> $(tput setaf 7)Checking administrator user... "
 if [ "`id -u`" = "0" ]; then
     sleep 2
     printf "$(tput setaf 6)ok$(tput setaf 7).\n"
@@ -26,7 +28,7 @@ else
         exit 1
     fi
 fi
-
+echo "$(tput cnorm)"
 # Update system
 ${sudo_cmd}apt update && sudo apt -y upgrade
 
@@ -112,19 +114,19 @@ printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
 printf "\n"
 
-echo "$(tput setaf 6)1. $(tput setaf 7)Go to cloudflare.com and connect with your account or create."
+echo "$(tput setaf 6)1. $(tput setaf 7)Go to $(tput setaf 622)cloudflare.com $(tput setaf 7)and connect with your account or create."
 echo "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare."
-echo "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to SSL/TLS and leave it below;"
-echo "\n  $(tput setaf 3)SSL/TLS encryption:       $(tput setaf 7)Full (strict)"
-echo "    $(tput setaf 3)Always Use HTTPS:         $(tput setaf 7)Off"
-echo "    $(tput setaf 3)HTTP Strict Transport:    $(tput setaf 7)Disable"
-echo "    $(tput setaf 3)Minimum TLS Version:      $(tput setaf 7)TLS 1.2"
-echo "    $(tput setaf 3)Opportunistic Encryption: $(tput setaf 7)Off"
-echo "    $(tput setaf 3)TLS 1.3:                  $(tput setaf 7)On"
-echo "    $(tput setaf 3)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n"
-echo "$(tput setaf 6)4. $(tput setaf 7)Go to \"Overview\" and scroll down to the bottom of the page."
-echo "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token\" and go to \"API Tokens\"."
-echo "$(tput setaf 6)6. $(tput setaf 7)Click on \"View\" in your \"Global API Key\"."
+echo "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to \"$(tput setaf 622)SSL/TLS$(tput setaf 7)\" and leave it below;"
+echo "\n    $(tput setaf 229)SSL/TLS encryption:       $(tput setaf 7)Full (strict)"
+echo "    $(tput setaf 229)Always Use HTTPS:         $(tput setaf 7)Off"
+echo "    $(tput setaf 229)HTTP Strict Transport:    $(tput setaf 7)Disable"
+echo "    $(tput setaf 229)Minimum TLS Version:      $(tput setaf 7)TLS 1.2"
+echo "    $(tput setaf 229)Opportunistic Encryption: $(tput setaf 7)Off"
+echo "    $(tput setaf 229)TLS 1.3:                  $(tput setaf 7)On"
+echo "    $(tput setaf 229)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n"
+echo "$(tput setaf 6)4. $(tput setaf 7)Go to \"$(tput setaf 622)Overview$(tput setaf 7)\" and scroll down to the bottom of the page."
+echo "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token$(tput setaf 7)\" and go to \"$(tput setaf 622)API Tokens$(tput setaf 7)\"."
+echo "$(tput setaf 6)6. $(tput setaf 7)Click on \"$(tput setaf 622)View$(tput setaf 7)\" in your \"$(tput setaf 622)Global API Key$(tput setaf 7)\"."
 echo "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n"
 
 read -p "$(tput setaf 6)> $(tput setaf 7)Insert your Cloud Flare Global API Key: $(tput setaf 6)" apicf
