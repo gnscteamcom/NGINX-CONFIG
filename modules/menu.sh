@@ -77,11 +77,54 @@ case "$removedomain" in
 esac
 }
 
+googledriveadvanced () {
+
+echo "work"
+sleep 5
+menu
+}
+menu_script () {
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mINSTALL SCRIPT's\e[0m"
+printf "\n\n"
+echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mGoogle Drive Advanced Player (with cPanel)"             
+#    \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
+printf "\n\n"
+echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
+read -p "$(tput setaf 6)> $(tput setaf 7)Select an option (number): $(tput setaf 6)" optionmenu
+echo -n "$(tput setaf 7)"
+case "$optionmenu" in
+    1|01)
+    clear
+    sleep 0.3
+    googledriveadvanced
+    menu
+    ;;
+#    2|02)
+#    clear
+#    sleep 0.3
+#    removehost
+#    menu
+#    ;;
+    Leave|leave|LEAVE)
+    clear
+    sleep 0.1
+    printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    ;;
+    *)
+    printf "  \033[1;31mInvalid!\033[0m"
+    sleep 1
+    clear
+    sleep 0.3
+    menu
+esac
+}
+
 menu (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mMAIN MENU\e[0m"
 printf "\n\n"
-echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (Domain)             
+echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (Domain)    \e[1;3;31m[\e[1;3;36m03\e[1;3;31m] \e[1;3;33mInstall script's 
     \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n\n"
 echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
@@ -98,6 +141,12 @@ case "$optionmenu" in
     clear
     sleep 0.3
     removehost
+    menu
+    ;;
+    3|03)
+    clear
+    sleep 0.3
+    menu_script
     menu
     ;;
     Leave|leave|LEAVE)
