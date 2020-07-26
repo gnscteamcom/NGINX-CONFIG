@@ -161,7 +161,7 @@ case "$language" in
     sleep 0.3
     ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     ${sudo_cmd}chmod +x /bin/menu
-    ${sudo_cmd}rm -r ${PATHDIR}
+#    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     cloudflareconfig
     menu
@@ -171,7 +171,7 @@ case "$language" in
     sleep 0.3
     ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     ${sudo_cmd}chmod +x /bin/menu
-    ${sudo_cmd}rm -r ${PATHDIR}
+#    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     cloudflareconfig
     menu
