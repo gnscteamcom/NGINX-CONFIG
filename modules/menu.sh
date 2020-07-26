@@ -282,7 +282,7 @@ echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (Domain)    
     \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n\n"
 echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
-read -p "$(tput setaf 6)> $(tput setaf 7)Select an option (number): $(tput setaf 6)" optionmenu
+read -p "$(tput setaf 6)> $(tput setaf 7)Select an option \(number\): $(tput setaf 6)" optionmenu
 echo -n "$(tput setaf 7)"
 case "$optionmenu" in
     1|01)
