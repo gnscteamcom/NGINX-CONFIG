@@ -23,7 +23,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 # Obtain SSL certificates from Let's Encrypt using Certbot:
 if [ "${ssl_install}" = "y" -o "${ssl_install}" = "Y" -o "${ssl_install}" = "yes" -o "${ssl_install}" = "YES" ]; then
-sudo certbot certonly --dns-cloudflare --email info@${Domain} --force-renewal -n --agree-tos --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain},*.${domain} --preferred-challenges dns-01
+sudo certbot certonly --dns-cloudflare --email info@${domain} --force-renewal -n --agree-tos --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain},*.${domain} --preferred-challenges dns-01
 else
 certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
 fi
@@ -41,8 +41,6 @@ ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domai
 
 # Reload NGINX to load in your new configuration:
 sudo nginx -t && sudo systemctl reload nginx
-
-echo "$(tput setaf 6)! $(tput setaf 7)Select an option (number): $(tput setaf 6)"
 
 }
 
@@ -82,6 +80,8 @@ googledriveadvanced () {
 # Install
 sudo apt -y install unzip nodejs npm
 npm install pm2 -g
+ufw allow 6666
+ufw allow 6868
 
 read -p "$(tput setaf 6)> $(tput setaf 7)Enter the domain: $(tput setaf 6)" domain_gdap
 echo -n "$(tput setaf 7)"
@@ -98,6 +98,12 @@ PATHDIR=$(cat pathdir)
 ${sudo_cmd}rm pathdir
 echo "${PATHDIR}"
 
+# Add host panel
+cp /etc/nginx/sites-available/exemple.com.conf /etc/nginx/sites-available/${domain_gdap}.conf
+sudo sed -i "s/exemple.com/${domain_gdap}/g" /etc/nginx/sites-available/${domain_gdap}.conf
+mkdir -p /var/www/${domain_gdap}/public
+chown www-data /var/www/${domain_gdap}/public
+
 # copy files
 cp ${PATHDIR}/modules/setup/GDAP/* /root/
 
@@ -107,6 +113,10 @@ unzip LoadBalancer.zip
 unzip ProxyStream.zip
 rm LoadBalancer.zip
 rm ProxyStream.zip
+mv /root/panel.zip /var/www/${domain_gdap}/public
+cd /var/www/${domain_gdap}/public
+unzip panel.zip
+rm panel.zip
 
 # Start node
 cd /root/LoadBalancer/bin
@@ -116,6 +126,7 @@ pm2 start www -i 0 --name ProxyStream
 
 # Edit files
 keyencrypt="$(tr -dc 'A-Za-z0-9!%&()*+-./@[\]_{}' </dev/urandom | head -c 20 ; echo)"
+sudo sed -i "s/https:\/\/proxy.apicodes.ml/https:\/\/proxy.${domain_gdap}/g" /var/www/${domain_gdap}/public/config.php
 sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/LoadBalancer/models/CacheManager.js
 sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/ProxyStream/models/CacheManager.js
 sudo sed -i "s/'yourdomain.com'/'${domain_gdap}'/g" /root/LoadBalancer/configs/servers.js
@@ -133,8 +144,8 @@ echo "    server 127.0.0.1:6868;"
 echo "}"
 echo ""
 echo "server {"
-echo "    listen 80;"
-echo "    listen [::]:80"
+echo "    listen 443 ssl http2;"
+echo "    listen [::]:443 ssl http2;"
 echo "    server_name proxy.${domain_gdap};"
 echo ""
 echo "    # security"
@@ -157,8 +168,8 @@ for ((i=1;i<$n+1;i++));
 do
     {
     echo "server {"
-    echo "    listen 80;"
-    echo "    listen [::]:80"
+    echo "    listen 443 ssl http2;"
+    echo "    listen [::]:443 ssl http2"
     echo "    server_name ${prefix_gdpa}$i.${subdomain_gdap}.${domain_gdap};"
     echo ""
     echo "    # security"
@@ -178,9 +189,49 @@ do
     } >> /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
 done
 
+sed -i -r 's/(listen .*443)/\1;#/g; s/(ssl_(certificate|certificate_key|trusted_certificate) )/#;#\1/g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+sed -i -r 's/(listen .*443)/\1;#/g; s/(ssl_(certificate|certificate_key|trusted_certificate) )/#;#\1/g' /etc/nginx/sites-available/${domain_gdap}.conf
+sed -i 's/443/80/g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+sed -i 's/80/81/g' /etc/nginx/sites-available/${domain_gdap}.conf
+sed -i 's/443/80/g' /etc/nginx/sites-available/${domain_gdap}.conf
+sudo systemctl reload nginx
+
+echo "$(tput civis)"
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+echo "$(tput setaf 6)+ $(tput setaf 7)Go to Cloud Flare and point the domains below to your IP;\n."
+echo -n "$(tput setaf 7)"
+echo "$(tput setaf 343) ${domain_gdap}"
+echo "$(tput setaf 343) proxy.${domain_gdap}"
+echo "$(tput setaf 343)  ${subdomain_gdap}.${domain_gdap}"
+for ((i=1;i<$n+1;i++));                                              
+do
+    echo "$(tput setaf 343)  ${prefix_gdpa}$i.${subdomain_gdap}.${domain_gdap}"
+done
+
+echo "\n  $(tput setaf 237)ATTENTION: $(tput setaf 7)press enter only after adding the subdomains in the Cloud Flare."
+sleep 5
+read -p "$(tput setaf 6)> $(tput setaf 7)Press enter to continue" null
+echo -n "$(tput setaf 7)"
+
+printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+echo "$(tput setaf 6)! $(tput setaf 7)For security, wait 60 seconds for the DNS to propagate..."
+
+sleep 60
+echo "$(tput cnorm)"
+
 # Install cert
 sudo certbot certonly --dns-cloudflare --email info@${domain_gdap} --force-renewal -n --agree-tos --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_gdap},*.${domain_gdap} --preferred-challenges dns-01
 
+sed -i -r 's/#?;#//g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain_gdap}.conf
+sed -i 's/80/443/g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
+sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain_gdap}.conf
+
+# Add symbolic link
+ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
+
+# Reload NGINX to load in your new configuration:
+sudo nginx -t && sudo systemctl reload nginx
 }
 
 menu_script () {
