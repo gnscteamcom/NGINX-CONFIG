@@ -130,6 +130,7 @@ sudo sed -i "s/https:\/\/proxy.apicodes.ml/https:\/\/proxy.${domain_gdap}/g" /va
 sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/LoadBalancer/models/CacheManager.js
 sudo sed -i "s/yourkeyhere/${keyencrypt}/g" /root/ProxyStream/models/CacheManager.js
 sudo sed -i "s/'yourdomain.com'/'${domain_gdap}'/g" /root/LoadBalancer/configs/servers.js
+sudo sed -i "s/2/${n}/g" /root/LoadBalancer/configs/servers.js
 sudo sed -i "s/'sv'/'${prefix_gdap}'/g" /root/LoadBalancer/configs/servers.js
 sudo sed -i 's/"yourdomain.com","www.jwplayer.com"//g' /root/ProxyStream/configs/servers.js
 
