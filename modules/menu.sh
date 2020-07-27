@@ -206,7 +206,7 @@ echo "$(tput setaf 343) proxy.${domain_gdap}"
 echo "$(tput setaf 343)  ${subdomain_gdap}.${domain_gdap}"
 for ((i=1;i<$n+1;i++));                                              
 do
-    echo "$(tput setaf 343)  ${prefix_gdpa}$i.${subdomain_gdap}.${domain_gdap}"
+    echo "$(tput setaf 343)  ${prefix_gdap}$i.${subdomain_gdap}.${domain_gdap}"
 done
 
 echo "\n  $(tput setaf 237)ATTENTION: $(tput setaf 7)press enter only after adding the subdomains in the Cloud Flare."
