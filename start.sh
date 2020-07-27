@@ -18,7 +18,7 @@ if [ "`id -u`" = "0" ]; then
 else
     if [ "$sudo_found" = "yes" ]; then
         sleep 1
-        printf "$(tput setaf 3)you need sudo rights. use: sudo sh start.sh.\033[0m\n"
+        printf "$(tput setaf 3)you need sudo rights. use: sudo bash start.sh.\033[0m\n"
         sleep 5
         exit 1
     else
@@ -82,7 +82,7 @@ ${sudo_cmd}openssl dhparam -out /etc/nginx/dhparam.pem 2048
 # Install certbot
 ${sudo_cmd}apt-get install software-properties-common
 ${sudo_cmd}add-apt-repository universe
-${sudo_cmd}add-apt-repository ppa:certbot/certbot
+${sudo_cmd}echo -ne "\n" | add-apt-repository ppa:certbot/certbot
 ${sudo_cmd}apt-get update && sudo apt -y upgrade
 ${sudo_cmd}apt-get install certbot python-certbot-nginx python3-certbot-dns-cloudflare
 
@@ -115,20 +115,20 @@ printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
 printf "\n"
 
-echo "$(tput setaf 6)1. $(tput setaf 7)Go to $(tput setaf 622)cloudflare.com $(tput setaf 7)and connect with your account or create."
-echo "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare."
-echo "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to \"$(tput setaf 622)SSL/TLS$(tput setaf 7)\" and leave it below;"
-echo "\n    $(tput setaf 229)SSL/TLS encryption:       $(tput setaf 7)Full (strict)"
-echo "    $(tput setaf 229)Always Use HTTPS:         $(tput setaf 7)Off"
-echo "    $(tput setaf 229)HTTP Strict Transport:    $(tput setaf 7)Disable"
-echo "    $(tput setaf 229)Minimum TLS Version:      $(tput setaf 7)TLS 1.2"
-echo "    $(tput setaf 229)Opportunistic Encryption: $(tput setaf 7)Off"
-echo "    $(tput setaf 229)TLS 1.3:                  $(tput setaf 7)On"
-echo "    $(tput setaf 229)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n"
-echo "$(tput setaf 6)4. $(tput setaf 7)Go to \"$(tput setaf 622)Overview$(tput setaf 7)\" and scroll down to the bottom of the page."
-echo "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token$(tput setaf 7)\" and go to \"$(tput setaf 622)API Tokens$(tput setaf 7)\"."
-echo "$(tput setaf 6)6. $(tput setaf 7)Click on \"$(tput setaf 622)View$(tput setaf 7)\" in your \"$(tput setaf 622)Global API Key$(tput setaf 7)\"."
-echo "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n"
+printf "$(tput setaf 6)1. $(tput setaf 7)Go to $(tput setaf 622)cloudflare.com $(tput setaf 7)and connect with your account or create.\n"
+printf "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare.\n"
+printf "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to \"$(tput setaf 622)SSL/TLS$(tput setaf 7)\" and leave it below;\n\n"
+printf "    $(tput setaf 229)SSL/TLS encryption:       $(tput setaf 7)Full (strict)"
+printf "    $(tput setaf 229)Always Use HTTPS:         $(tput setaf 7)Off"
+printf "    $(tput setaf 229)HTTP Strict Transport:    $(tput setaf 7)Disable"
+printf "    $(tput setaf 229)Minimum TLS Version:      $(tput setaf 7)TLS 1.2"
+printf "    $(tput setaf 229)Opportunistic Encryption: $(tput setaf 7)Off"
+printf "    $(tput setaf 229)TLS 1.3:                  $(tput setaf 7)On"
+printf "    $(tput setaf 229)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n\n"
+printf "$(tput setaf 6)4. $(tput setaf 7)Go to \"$(tput setaf 622)Overview$(tput setaf 7)\" and scroll down to the bottom of the page.\n"
+printf "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token$(tput setaf 7)\" and go to \"$(tput setaf 622)API Tokens$(tput setaf 7)\".\n"
+printf "$(tput setaf 6)6. $(tput setaf 7)Click on \"$(tput setaf 622)View$(tput setaf 7)\" in your \"$(tput setaf 622)Global API Key$(tput setaf 7)\".\n"
+printf "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n"
 
 read -p "$(tput setaf 6)> $(tput setaf 7)Insert your Cloud Flare Global API Key: $(tput setaf 6)" apicf
 echo -n "$(tput setaf 7)"
@@ -147,12 +147,13 @@ sudo chmod 0400 /root/.secrets/cloudflare.ini
 fi
 
 }
+
 language (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo -ne "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mSelect your language\e[0m"
+printf "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mSelect your language\e[0m\n"
 printf "\n"
-echo -ne "  \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mPortuguês (Brazil)              
-  \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mEnglish"
+printf "  \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mPortuguês (pt-BR)\n
+  \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mEnglish (en-US)\n"
 printf "\n"
 read -p "$(tput setaf 6)> $(tput setaf 7)Your language: $(tput setaf 6)" language
 echo -n "$(tput setaf 7)"
@@ -162,7 +163,6 @@ case "$language" in
     sleep 0.3
     ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     ${sudo_cmd}chmod +x /bin/menu
-#    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     cloudflareconfig
     menu
@@ -172,7 +172,6 @@ case "$language" in
     sleep 0.3
     ${sudo_cmd}wget https://raw.githubusercontent.com/Zonimi/NGINX-CONFIG/master/modules/menu.sh -O /bin/menu > /dev/null 2>&1
     ${sudo_cmd}chmod +x /bin/menu
-#    ${sudo_cmd}rm -r ${PATHDIR}
     clear
     cloudflareconfig
     menu
