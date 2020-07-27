@@ -28,7 +28,7 @@ else
 certbot certonly --webroot -d ${domain} --email info@${domain} -w /var/www/_letsencrypt -n --agree-tos --force-renewal
 fi
 
-Uncomment SSL related directives in the configuration:
+# Uncomment SSL related directives in the configuration:
 sed -i -r 's/#?;#//g' /etc/nginx/sites-available/${domain}.conf
 sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain}.conf
 
@@ -48,7 +48,7 @@ removehost () {
 
 # Question which domain
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "\e[1;3;31m[\e[1;3;32m-\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m"
+printf "\e[1;3;31m[\e[1;3;32m-\e[1;3;31m] \e[1;3;33mWhich host do you want to remove?\e[0m\n"
 printf "\n"
 ls -1 /etc/nginx/sites-enabled/
 printf "\n"
@@ -59,6 +59,7 @@ echo -n "$(tput setaf 7)"
 # Remove files nginx
 rm /etc/nginx/sites-available/${removedomain}.conf > /dev/null 2>&1
 unlink /etc/nginx/sites-enabled/${removedomain}
+rm -r /var/www/${removedomain}
 
 # Remove cert SSL
 certbot delete --cert-name ${removedomain} > /dev/null 2>&1
