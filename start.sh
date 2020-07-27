@@ -60,7 +60,7 @@ ${sudo_cmd}rm pathdir
 ${sudo_cmd}sed -i "s/VERSIONPHP/${PHPV}/g" ${PATHDIR}/modules/setup/nginx/nginxconfig/php_fastcgi.conf
 
 # Hide php version
-${sudo_cmd}sed -i "s/expose_php = Off/expose_php = On/g" /etc/php/${PHPV}/fpm/php.ini
+${sudo_cmd}sed -i "s/expose_php = On/expose_php = Off/g" /etc/php/${PHPV}/fpm/php.ini
 ${sudo_cmd}systemctl restart php${PHPV}-fpm
 
 # Backup nginx
