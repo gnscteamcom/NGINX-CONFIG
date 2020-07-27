@@ -229,7 +229,8 @@ sed -i 's/80/443/g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
 sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain_gdap}.conf
 
 # Add symbolic link
-ln -s /etc/nginx/sites-available/${domain_gdap}.conf /etc/nginx/sites-enabled/${domain}
+ln -s /etc/nginx/sites-available/${domain_gdap}.conf /etc/nginx/sites-enabled/${domain_gdap}
+ln -s /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf /etc/nginx/sites-enabled/GoogleDriveAdvancedPlayer
 
 pm2 restart all
 
