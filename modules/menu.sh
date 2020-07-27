@@ -67,7 +67,7 @@ certbot delete --cert-name ${removedomain} > /dev/null 2>&1
 sudo systemctl reload nginx > /dev/null 2>&1
 
 case "$removedomain" in
-    Leave|leave|LEAVE|\n)
+    Leave|leave|LEAVE)
     echo "\n\033[1;31mReturning...\033[0m"
     sleep 2
     menu
@@ -152,7 +152,7 @@ echo ""
 echo "    # security"
 echo "    include                 nginxconfig/security.conf;"
 echo ""
-echo "    #SSL
+echo "    #SSL"
 echo "    ssl_certificate         /etc/letsencrypt/live/${domain_gdap}/fullchain.pem;"
 echo "    ssl_certificate_key     /etc/letsencrypt/live/${domain_gdap}/privkey.pem;"
 echo "    ssl_trusted_certificate /etc/letsencrypt/live/${domain_gdap}/chain.pem;"
@@ -176,7 +176,7 @@ do
     echo "    # security"
     echo "    include                 nginxconfig/security.conf;"
     echo ""
-    echo "    #SSL
+    echo "    #SSL"
     echo "    ssl_certificate         /etc/letsencrypt/live/${domain_gdap}/fullchain.pem;"
     echo "    ssl_certificate_key     /etc/letsencrypt/live/${domain_gdap}/privkey.pem;"
     echo "    ssl_trusted_certificate /etc/letsencrypt/live/${domain_gdap}/chain.pem;"
@@ -229,7 +229,7 @@ sed -i 's/80/443/g' /etc/nginx/sites-available/GoogleDriveAdvancedPlayer.conf
 sed -i 's/80/443/g; s/81/80/g' /etc/nginx/sites-available/${domain_gdap}.conf
 
 # Add symbolic link
-ln -s /etc/nginx/sites-available/${domain}.conf /etc/nginx/sites-enabled/${domain}
+ln -s /etc/nginx/sites-available/${domain_gdap}.conf /etc/nginx/sites-enabled/${domain}
 
 pm2 restart all
 
