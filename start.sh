@@ -82,13 +82,19 @@ ${sudo_cmd}openssl dhparam -out /etc/nginx/dhparam.pem 2048
 # Install certbot
 ${sudo_cmd}apt-get install software-properties-common
 ${sudo_cmd}add-apt-repository universe
+if [ `lsb_release -cs` = "focal" ]; then
+${sudo_cmd}apt-get update && sudo apt -y upgrade
+${sudo_cmd}apt-get -y install certbot python3-certbot-nginx python3-certbot-dns-cloudflare
+else
 ${sudo_cmd}echo -ne "\n" | add-apt-repository ppa:certbot/certbot
 ${sudo_cmd}apt-get update && sudo apt -y upgrade
-${sudo_cmd}apt-get install certbot python-certbot-nginx python3-certbot-dns-cloudflare
+${sudo_cmd}apt-get install certbot python3-certbot-nginx python3-certbot-dns-cloudflare
+fi
 
 # Create a common ACME-challenge directory (for Let's Encrypt)
 ${sudo_cmd}mkdir -p /var/www/_letsencrypt
 ${sudo_cmd}chown www-data /var/www/_letsencrypt
+
 
 # Settings for CloudFlare
 cloudflareconfig () {
