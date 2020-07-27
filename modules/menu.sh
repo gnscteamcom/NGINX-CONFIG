@@ -171,7 +171,7 @@ do
     echo "server {"
     echo "    listen 443 ssl http2;"
     echo "    listen [::]:443 ssl http2"
-    echo "    server_name ${prefix_gdpa}$i.${subdomain_gdap}.${domain_gdap};"
+    echo "    server_name ${prefix_gdap}$i.${subdomain_gdap}.${domain_gdap};"
     echo ""
     echo "    # security"
     echo "    include                 nginxconfig/security.conf;"
@@ -199,23 +199,23 @@ sudo systemctl reload nginx
 
 echo "$(tput civis)"
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "$(tput setaf 6)+ $(tput setaf 7)Go to Cloud Flare and point the domains below to your IP;\n."
-echo -n "$(tput setaf 7)"
-echo "$(tput setaf 343) ${domain_gdap}"
-echo "$(tput setaf 343) proxy.${domain_gdap}"
-echo "$(tput setaf 343)  ${subdomain_gdap}.${domain_gdap}"
+printf "$(tput setaf 6)+ $(tput setaf 7)Go to Cloud Flare and point the domains below to your IP;\n."
+printf "$(tput setaf 7)\n"
+printf "$(tput setaf 343)  ${domain_gdap}\n"
+printf "$(tput setaf 343)  proxy.${domain_gdap}\n"
+# printf "$(tput setaf 343)  ${subdomain_gdap}.${domain_gdap}\n"
 for ((i=1;i<$n+1;i++));                                              
 do
     echo "$(tput setaf 343)  ${prefix_gdap}$i.${subdomain_gdap}.${domain_gdap}"
 done
 
-echo "\n  $(tput setaf 237)ATTENTION: $(tput setaf 7)press enter only after adding the subdomains in the Cloud Flare."
+printf "\n  $(tput setaf 5)ATTENTION: $(tput setaf 7)press enter only after adding the subdomains in the Cloud Flare.\n"
 sleep 5
 read -p "$(tput setaf 6)> $(tput setaf 7)Press enter to continue" null
-echo -n "$(tput setaf 7)"
+printf "$(tput setaf 7)"
 
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "$(tput setaf 6)! $(tput setaf 7)For security, wait 60 seconds for the DNS to propagate..."
+printf "$(tput setaf 6)! $(tput setaf 7)For security, wait 60 seconds for the DNS to propagate..."
 
 sleep 60
 echo "$(tput cnorm)"
@@ -240,14 +240,14 @@ sudo nginx -t && sudo systemctl reload nginx
 
 menu_script () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mINSTALL SCRIPT\'s\e[0m"
+printf "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mINSTALL SCRIPT\'s\e[0m\n"
 printf "\n\n"
-echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mGoogle Drive Advanced Player \(with cPanel 1.0\)"             
+printf "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mGoogle Drive Advanced Player (with cPanel 1.0)\n"             
 #    \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n\n"
-echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
+printf "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return.\n"
 read -p "$(tput setaf 6)> $(tput setaf 7)Select an option (number): $(tput setaf 6)" optionmenu
-echo -n "$(tput setaf 7)"
+print "$(tput setaf 7)"
 case "$optionmenu" in
     1|01)
     clear
@@ -271,15 +271,15 @@ case "$optionmenu" in
     sleep 1
     clear
     sleep 0.3
-    menu
+    menu_script
 esac
 }
 
 menu (){
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo -ne "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mMAIN MENU\e[0m"
-printf "\n\n"
-echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (Domain)    \e[1;3;31m[\e[1;3;36m03\e[1;3;31m] \e[1;3;33mInstall script's 
+printf "\e[1;3;31m[\e[1;3;32m×\e[1;3;31m] \e[1;3;33mMAIN MENU\e[0m"
+printf "\n\n\n"
+echo -ne "    \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mAdd host (domain)    \e[1;3;31m[\e[1;3;36m03\e[1;3;31m] \e[1;3;33mInstall script's 
     \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mRemove host"
 printf "\n\n"
 echo "$(tput setaf 6)! $(tput setaf 8)Send \"leave\" to return."
