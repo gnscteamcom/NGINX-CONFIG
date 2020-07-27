@@ -73,6 +73,7 @@ ${sudo_cmd}rm /etc/nginx/nginx.conf
 ${sudo_cmd}rm /etc/nginx/mime.types
 
 # Move new conf
+mkdir /etc/nginx/sites-enabled/
 ${sudo_cmd}mv ${PATHDIR}/modules/setup/nginx/* /etc/nginx/
 
 # Generate Diffie-Hellman keys
