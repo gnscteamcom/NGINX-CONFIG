@@ -6,7 +6,7 @@ printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 # Question which domain
 read -p "$(tput setaf 6)> $(tput setaf 7)Enter the domain: $(tput setaf 6)" domain
 echo -n "$(tput setaf 7)"
-echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
+printf "\n\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
 read -p "$(tput setaf 6)> $(tput setaf 7)Are you using CloudFlare: $(tput setaf 6)" ssl_install
 echo -n "$(tput setaf 7)"
 
