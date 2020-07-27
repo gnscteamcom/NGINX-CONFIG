@@ -93,9 +93,9 @@ ${sudo_cmd}chown www-data /var/www/_letsencrypt
 # Settings for CloudFlare
 cloudflareconfig () {
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "$(tput setaf 6)+ $(tput setaf 7)Some scripts depend on CloudFlare,\n  it is important that you enable this."
+printf "$(tput setaf 6)+ $(tput setaf 7)Some scripts depend on CloudFlare,\n  it is important that you enable this.\n"
 echo -n "$(tput setaf 7)"
-echo "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\"."
+printf "\n$(tput setaf 6)! $(tput setaf 8)Answer \"yes\" or \"no\".\n"
 read -p "$(tput setaf 6)> $(tput setaf 7)Do you want to configure CloudFlare: $(tput setaf 6)" cloudflare
 echo -n "$(tput setaf 7)"
 
@@ -118,17 +118,17 @@ printf "\n"
 printf "$(tput setaf 6)1. $(tput setaf 7)Go to $(tput setaf 622)cloudflare.com $(tput setaf 7)and connect with your account or create.\n"
 printf "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare.\n"
 printf "$(tput setaf 6)3. $(tput setaf 7)On the Cloud Flare dashboard, go to \"$(tput setaf 622)SSL/TLS$(tput setaf 7)\" and leave it below;\n\n"
-printf "    $(tput setaf 229)SSL/TLS encryption:       $(tput setaf 7)Full (strict)"
-printf "    $(tput setaf 229)Always Use HTTPS:         $(tput setaf 7)Off"
-printf "    $(tput setaf 229)HTTP Strict Transport:    $(tput setaf 7)Disable"
-printf "    $(tput setaf 229)Minimum TLS Version:      $(tput setaf 7)TLS 1.2"
-printf "    $(tput setaf 229)Opportunistic Encryption: $(tput setaf 7)Off"
-printf "    $(tput setaf 229)TLS 1.3:                  $(tput setaf 7)On"
-printf "    $(tput setaf 229)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n\n"
+printf "   $(tput setaf 229)SSL/TLS encryption:       $(tput setaf 7)Full (strict)\n"
+printf "   $(tput setaf 229)Always Use HTTPS:         $(tput setaf 7)Off\n"
+printf "   $(tput setaf 229)HTTP Strict Transport:    $(tput setaf 7)Disable\n"
+printf "   $(tput setaf 229)Minimum TLS Version:      $(tput setaf 7)TLS 1.2\n"
+printf "   $(tput setaf 229)Opportunistic Encryption: $(tput setaf 7)Off\n"
+printf "   $(tput setaf 229)TLS 1.3:                  $(tput setaf 7)On\n"
+printf "   $(tput setaf 229)Automatic HTTPS Rewrites: $(tput setaf 7)Off\n\n"
 printf "$(tput setaf 6)4. $(tput setaf 7)Go to \"$(tput setaf 622)Overview$(tput setaf 7)\" and scroll down to the bottom of the page.\n"
 printf "$(tput setaf 6)5. $(tput setaf 7)Click on \"Get your API token$(tput setaf 7)\" and go to \"$(tput setaf 622)API Tokens$(tput setaf 7)\".\n"
 printf "$(tput setaf 6)6. $(tput setaf 7)Click on \"$(tput setaf 622)View$(tput setaf 7)\" in your \"$(tput setaf 622)Global API Key$(tput setaf 7)\".\n"
-printf "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n"
+printf "$(tput setaf 6)7. $(tput setaf 7)Paste your API below and press enter\n\n"
 
 read -p "$(tput setaf 6)> $(tput setaf 7)Insert your Cloud Flare Global API Key: $(tput setaf 6)" apicf
 echo -n "$(tput setaf 7)"
