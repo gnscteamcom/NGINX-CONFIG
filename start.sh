@@ -119,8 +119,8 @@ sudo chmod 0400 /root/.secrets/cloudflare.ini
 
 else
 printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-echo "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
-printf "\n"
+printf "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mFollow the steps below to set up your Cloud Flare.\e[0m"
+printf "\n\n"
 
 printf "$(tput setaf 6)1. $(tput setaf 7)Go to $(tput setaf 622)cloudflare.com $(tput setaf 7)and connect with your account or create.\n"
 printf "$(tput setaf 6)2. $(tput setaf 7)Add your website and point the DNS as instructed by Cloud Flare.\n"
@@ -161,7 +161,6 @@ printf "\e[1;3;31m[\e[1;3;32m+\e[1;3;31m] \e[1;3;33mSelect your language\e[0m\n"
 printf "\n"
 printf "  \e[1;3;31m[\e[1;3;36m01\e[1;3;31m] \e[1;3;33mPortuguês (pt-BR)\n
   \e[1;3;31m[\e[1;3;36m02\e[1;3;31m] \e[1;3;33mEnglish (en-US)\n"
-printf "\n"
 read -p "$(tput setaf 6)> $(tput setaf 7)Your language: $(tput setaf 6)" language
 echo -n "$(tput setaf 7)"
 case "$language" in
